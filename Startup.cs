@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MoviesRestApi.Data;
 
 namespace MoviesRestApi
 {
@@ -28,10 +30,14 @@ namespace MoviesRestApi
         {
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MoviesRestApi", Version = "v1" });
             });
+
+            services.AddDbContext<MoviesRestApiContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MoviesRestApiContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
